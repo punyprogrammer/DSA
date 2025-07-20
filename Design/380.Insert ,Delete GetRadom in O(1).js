@@ -1,0 +1,34 @@
+class RandomizedSet {
+  constructor() {
+    this.map = new Map();  // val -> index
+    this.list = [];       // stores the actual values
+  }
+
+  insert(val) {
+    if (this.map.has(val)) return false;
+    this.map.set(val, this.list.length);
+    this.list.push(val);
+    return true;
+  }
+
+  remove(val) {
+    if (!this.map.has(val)) return false;
+    
+    const index = this.map.get(val);
+    const lastElement = this.list[this.list.length - 1];
+    
+    // Swap with last element
+    this.list[index] = lastElement;
+    this.map.set(lastElement, index);
+    
+    // Remove the last element
+    this.list.pop();
+    this.map.delete(val);
+    
+    return true;
+  }
+
+  getRandom() {
+    return this.list[Math.floor(Math.random() * this.list.length)];
+  }
+}
