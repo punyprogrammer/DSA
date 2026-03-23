@@ -1,0 +1,24 @@
+/**
+ * @param {number[]} days
+ * @param {number[]} costs
+ * @return {number}
+ */
+
+// the idea is to travel all the days 
+// iterate through all the days and make a decision of skip ,buy 1 day ,buy 7 day , buy 30 day 
+var mincostTickets = function (days, costs) {
+    const TOTAL_DAYS = 365
+    const dp = Array(TOTAL_DAYS + 1).fill(0);
+    const daysToTravel = new Set(days);
+    for (let i = 1; i <= TOTAL_DAYS; i++) {
+        // if not in daysToTravel
+        if (!daysToTravel.has(i)) dp[i] = dp[i - 1];
+        else dp[i] = Math.min(
+            dp[i - 1] + costs[0],
+            dp[Math.max(0, i - 7)] + costs[1],
+            dp[Math.max(0, i - 30)] + costs[2]
+        );
+    }
+    const result = dp[days.at(-1)];
+    return dp[days.at(-1)];
+};
