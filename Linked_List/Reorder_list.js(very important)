@@ -1,0 +1,47 @@
+function reverse(head) {
+  let prev = null;
+  let curr = head;
+
+  while (curr) {
+    const next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+
+  return prev;
+}
+
+export default function rearrangeLinkedList(head) {
+  if (!head || !head.next) return head;
+
+  // Step 1: find middle
+  let slow = head;
+  let fast = head;
+
+  while (fast.next && fast.next.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  // Step 2: split + reverse second half
+  let second = slow.next;
+  slow.next = null;
+
+  let right = reverse(second);
+  let left = head;
+
+  // Step 3: merge alternately
+  while (right) {
+    const nextLeft = left.next;
+    const nextRight = right.next;
+
+    left.next = right;
+    right.next = nextLeft;
+
+    left = nextLeft;
+    right = nextRight;
+  }
+
+  return head;
+}
